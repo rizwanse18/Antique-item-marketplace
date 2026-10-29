@@ -39,20 +39,20 @@ export default async function ContactPage() {
                     <p className="font-display text-base font-semibold">Email</p>
                     <p className="mt-1 text-xs text-muted">
                       General:{" "}
-                      <a href="mailto:hello@antiqua.example.com" className="text-gold-dk underline">
-                        hello@antiqua.example.com
+                      <a href="mailto:antiqueitemmarketplace@gmail.com" className="text-gold-dk underline">
+                        antiqueitemmarketplace@gmail.com
                       </a>
                     </p>
                     <p className="text-xs text-muted">
                       Trust &amp; safety:{" "}
-                      <a href="mailto:trust@antiqua.example.com" className="text-gold-dk underline">
-                        trust@antiqua.example.com
+                      <a href="mailto:antiqueitemmarketplace@gmail.com" className="text-gold-dk underline">
+                        antiqueitemmarketplace@gmail.com
                       </a>
                     </p>
                     <p className="text-xs text-muted">
                       Legal:{" "}
-                      <a href="mailto:legal@antiqua.example.com" className="text-gold-dk underline">
-                        legal@antiqua.example.com
+                      <a href="mailto:antiqueitemmarketplace@gmail.com" className="text-gold-dk underline">
+                        antiqueitemmarketplace@gmail.com
                       </a>
                     </p>
                   </div>

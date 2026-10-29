@@ -34,7 +34,7 @@ export async function submitContactAction(
     await prisma.emailLog.create({
       data: {
         userId: me?.id ?? null,
-        toEmail: "support@antiqua.example.com",
+        toEmail: "antiqueitemmarketplace@gmail.com",
         toName: "ANTIQUA Support",
         subject: `[Contact] ${topic} — from ${name}`,
         body: `From: ${name} <${email}>\nTopic: ${topic}\n\n${message}`,
@@ -51,7 +51,7 @@ export async function submitContactAction(
   try {
     await sendEmail({
       userId: me?.id ?? null,
-      toEmail: "support@antiqua.example.com",
+      toEmail: "antiqueitemmarketplace@gmail.com",
       toName: "ANTIQUA Support",
       subject: `[Contact] ${topic} — from ${name}`,
       body: `From: ${name} <${email}>\nTopic: ${topic}\n\n${message}`,

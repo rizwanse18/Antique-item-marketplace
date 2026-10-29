@@ -59,8 +59,8 @@ export default function ProhibitedPage() {
       <p>
         If you see a listing that may violate these rules, please report it.
         Your report is confidential. Reach us at{" "}
-        <a href="mailto:trust@antiqua.example.com" className="text-gold-dk underline">
-          trust@antiqua.example.com
+        <a href="mailto:antiqueitemmarketplace@gmail.com" className="text-gold-dk underline">
+          antiqueitemmarketplace@gmail.com
         </a>{" "}
         or use our <a href="/legal/contact" className="text-gold-dk underline">contact form</a>.
       </p>

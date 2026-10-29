@@ -80,8 +80,8 @@ export default function PrivacyPage() {
       <h2>8. Contact</h2>
       <p>
         For privacy questions or to exercise your rights, email{" "}
-        <a href="mailto:privacy@antiqua.example.com" className="text-gold-dk underline">
-          privacy@antiqua.example.com
+        <a href="mailto:antiqueitemmarketplace@gmail.com" className="text-gold-dk underline">
+          antiqueitemmarketplace@gmail.com
         </a>
         .
       </p>

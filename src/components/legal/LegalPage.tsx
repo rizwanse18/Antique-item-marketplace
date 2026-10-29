@@ -47,8 +47,8 @@ export function LegalPage({
             <p className="font-semibold text-ink">Contact</p>
             <p className="mt-1">
               Questions about this document? Email{" "}
-              <a href="mailto:legal@antiqua.example.com" className="text-gold-dk underline">
-                legal@antiqua.example.com
+              <a href="mailto:antiqueitemmarketplace@gmail.com" className="text-gold-dk underline">
+                antiqueitemmarketplace@gmail.com
               </a>{" "}
               or use our{" "}
               <Link href="/legal/contact" className="text-gold-dk underline">
