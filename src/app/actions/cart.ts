@@ -11,7 +11,7 @@ export interface CartProduct {
   slug: string;
   title: string;
   price: number;
-  imageUrl: string | null;
+  imageUrl: string;
   plateFrom: string;
   plateTo: string;
   category: string;
@@ -34,43 +34,45 @@ export async function fetchCartProducts(ids: string[]): Promise<CartProduct[]> {
     },
   });
 
-  return ids
-    .map((id) => {
-      const p = rows.find((r) => r.id === id);
-      if (!p) return null;
+  const out: CartProduct[] = [];
 
-      let available = true;
-      let reason: string | null = null;
+  for (const id of ids) {
+    const p = rows.find((r) => r.id === id);
+    if (!p) continue;
 
-      if (p.saleType === "auction") {
-        available = false;
-        reason = "This is an auction-only lot. Bid on it instead.";
-      } else if (p.orderItems.length > 0) {
-        available = false;
-        reason = "This lot has already been purchased.";
-      } else if (me && me.id === p.seller.id) {
-        available = false;
-        reason = "You cannot buy your own listing.";
-      } else if (!me) {
-        available = false;
-        reason = "Sign in to purchase.";
-      }
+    let available = true;
+    let reason: string | null = null;
 
-      return {
-        id: p.id,
-        slug: p.slug,
-        title: p.title,
-        price: p.saleType === "buynow" ? (p.buyNowPrice ?? p.currentBid) : p.currentBid,
-        imageUrl: p.images[0]?.url ?? null,
-        plateFrom: p.plateFrom,
-        plateTo: p.plateTo,
-        category: p.category.name,
-        sellerName: p.seller.name,
-        available,
-        reason,
-      };
-    })
-    .filter((p): p is CartProduct => p !== null);
+    if (p.saleType === "auction") {
+      available = false;
+      reason = "This is an auction-only lot. Bid on it instead.";
+    } else if (p.orderItems.length > 0) {
+      available = false;
+      reason = "This lot has already been purchased.";
+    } else if (me && me.id === p.sellerId) {
+      available = false;
+      reason = "You cannot buy your own listing.";
+    } else if (!me) {
+      available = false;
+      reason = "Sign in to purchase.";
+    }
+
+    out.push({
+      id: p.id,
+      slug: p.slug,
+      title: p.title,
+      price: p.saleType === "buynow" ? (p.buyNowPrice ?? p.currentBid) : p.currentBid,
+      imageUrl: p.images[0]?.url ?? "",
+      plateFrom: p.plateFrom,
+      plateTo: p.plateTo,
+      category: p.category.name,
+      sellerName: p.seller.name,
+      available,
+      reason,
+    });
+  }
+
+  return out;
 }
 
 export interface MultiOrderState {
@@ -121,10 +123,10 @@ export async function createMultiOrderAction(
   for (const p of rows) {
     if (p.saleType === "auction") return { error: `"${p.title}" is auction-only and cannot be purchased directly.` };
     if (p.orderItems.length > 0) return { error: `"${p.title}" has already been purchased.` };
-    if (p.seller.id === me.id) return { error: `You cannot purchase your own listing "${p.title}".` };
+    if (p.sellerId === me.id) return { error: `You cannot purchase your own listing "${p.title}".` };
 
     const price = p.saleType === "buynow" ? (p.buyNowPrice ?? p.currentBid) : p.currentBid;
-    purchasable.push({ id: p.id, title: p.title, price, sellerId: p.seller.id });
+    purchasable.push({ id: p.id, title: p.title, price, sellerId: p.sellerId });
   }
 
   const subtotal = purchasable.reduce((s, p) => s + p.price, 0);
