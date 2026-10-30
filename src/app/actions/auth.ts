@@ -31,16 +31,20 @@ export async function signUpAction(
 
   await setSession(user.id);
 
-  const { sendEmailToUser } = await import("@/lib/email");
-  await sendEmailToUser(
-    user.id,
-    "Welcome to ANTIQUA",
-    `Hi ${name},\n\nThank you for joining ANTIQUA — the international marketplace for authenticated antiques, fine art and rare collectibles.\n\nYou can now:\n  • Browse authenticated lots from vetted consignors\n  • Bid live on auctions or buy fixed-price items\n  • Track lots in your watchlist and receive alerts\n  • Consign your own antiques to a global audience\n\nSign in any time: https://antiqua.example.com/sign-in\n\n— The ANTIQUA team`,
-    "welcome"
-  ).catch(() => {});
+  // Send welcome email — wrapped so it never blocks signup
+  try {
+    const { sendEmailToUser } = await import("@/lib/email");
+    await sendEmailToUser(
+      user.id,
+      "Welcome to ANTIQUA",
+      `Hi ${name},\n\nThank you for joining ANTIQUA — the international marketplace for authenticated antiques, fine art and rare collectibles.\n\nYou can now:\n  • Browse authenticated lots from vetted consignors\n  • Bid live on auctions or buy fixed-price items\n  • Track lots in your watchlist and receive alerts\n  • Consign your own antiques to a global audience\n\nSign in any time: ${process.env.NEXT_PUBLIC_SITE_URL || "https://antiqua.example.com"}/sign-in\n\n— The ANTIQUA team`,
+      "welcome"
+    );
+  } catch (e) {
+    console.error("[auth] welcome email failed:", e);
+  }
 
   redirect("/dashboard");
-
 }
 
 export async function signInAction(
@@ -59,17 +63,7 @@ export async function signInAction(
   if (!ok) return { error: "Invalid email or password." };
 
   await setSession(user.id);
-
-  const { sendEmailToUser } = await import("@/lib/email");
-  await sendEmailToUser(
-    user.id,
-    "Welcome to ANTIQUA",
-    `Hi ${name},\n\nThank you for joining ANTIQUA — the international marketplace for authenticated antiques, fine art and rare collectibles.\n\nYou can now:\n  • Browse authenticated lots from vetted consignors\n  • Bid live on auctions or buy fixed-price items\n  • Track lots in your watchlist and receive alerts\n  • Consign your own antiques to a global audience\n\nSign in any time: https://antiqua.example.com/sign-in\n\n— The ANTIQUA team`,
-    "welcome"
-  ).catch(() => {});
-
   redirect("/dashboard");
-
 }
 
 export async function signOutAction() {

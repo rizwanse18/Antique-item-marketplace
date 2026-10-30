@@ -18,7 +18,11 @@ export async function getMyListings(): Promise<Item[]> {
   if (!user) return [];
   const rows = await prisma.product.findMany({
     where: { sellerId: user.id },
-    include: { category: true, seller: true },
+    include: {
+      category: true,
+      seller: true,
+      images: { orderBy: [{ isPrimary: "desc" }, { order: "asc" }] },
+    },
     orderBy: { createdAt: "desc" },
   });
   return rows.map(toItem);
@@ -34,9 +38,9 @@ export async function getSellerStats(userId: string) {
     where: { sellerId: userId },
     select: { bidsCount: true, currentBid: true, watchers: true },
   });
-  const totalBids = products.reduce((s,p)=>s+p.bidsCount,0);
-  const totalViews = products.reduce((s,p)=>s+p.watchers,0);
-  const highestBid = products.reduce((m,p)=>Math.max(m,p.currentBid),0);
-  const revenueEstimate = products.reduce((s,p)=>s+p.currentBid,0);
+  const totalBids = products.reduce((s, p) => s + p.bidsCount, 0);
+  const totalViews = products.reduce((s, p) => s + p.watchers, 0);
+  const highestBid = products.reduce((m, p) => Math.max(m, p.currentBid), 0);
+  const revenueEstimate = products.reduce((s, p) => s + p.currentBid, 0);
   return { total, live, totalBids, totalViews, highestBid, revenueEstimate };
 }
