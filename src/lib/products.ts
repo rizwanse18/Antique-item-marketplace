@@ -4,8 +4,6 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
 import type { Item, SaleType } from "@/types";
 
-// Use Prisma.validator so literal types ("asc"/"desc") are preserved
-// without the readonly constraint that `as const` would impose.
 const include = Prisma.validator<Prisma.ProductInclude>()({
   category: true,
   seller: true,
