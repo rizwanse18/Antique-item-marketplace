@@ -1,13 +1,16 @@
 import "server-only";
 import { connection } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
 import type { Item, SaleType } from "@/types";
 
-const include = {
+// Use Prisma.validator so literal types ("asc"/"desc") are preserved
+// without the readonly constraint that `as const` would impose.
+const include = Prisma.validator<Prisma.ProductInclude>()({
   category: true,
   seller: true,
   images: { orderBy: [{ isPrimary: "desc" }, { order: "asc" }] },
-} as const;
+});
 
 type ProductRow = Awaited<ReturnType<typeof prisma.product.findFirst<{ include: typeof include }>>>;
 
@@ -68,7 +71,7 @@ export async function getLiveAuctionItems(): Promise<Item[]> {
   await connection();
   const now = new Date();
   const rows = await prisma.product.findMany({
-    where: { saleType: { in: ["auction", "both"] }, endsAt: { gt: now } },
+    where: { saleType: { in: ["auction", "both"] }, endsAt: { gt: now }, hidden: false },
     include,
     orderBy: { endsAt: "asc" },
   });
@@ -78,7 +81,7 @@ export async function getLiveAuctionItems(): Promise<Item[]> {
 export async function getBuyNowItems(): Promise<Item[]> {
   await connection();
   const rows = await prisma.product.findMany({
-    where: { saleType: "buynow" },
+    where: { saleType: "buynow", hidden: false },
     include,
     orderBy: { createdAt: "desc" },
   });
@@ -88,6 +91,7 @@ export async function getBuyNowItems(): Promise<Item[]> {
 export async function getRecentlyAdded(limit = 4): Promise<Item[]> {
   await connection();
   const rows = await prisma.product.findMany({
+    where: { hidden: false },
     include,
     orderBy: { createdAt: "desc" },
     take: limit,
@@ -101,6 +105,7 @@ export async function getRelatedItems(item: Item, limit = 3): Promise<Item[]> {
   const rows = await prisma.product.findMany({
     where: {
       id: { not: item.id },
+      hidden: false,
       OR: [{ categoryId: cat?.id ?? "" }, { origin: item.origin }],
     },
     include,
