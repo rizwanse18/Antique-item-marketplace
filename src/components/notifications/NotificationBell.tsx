@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Bell } from "lucide-react";
-import { fetchMyNotifications, markAllReadAction } from "@/app/actions/notifications";
+import { Bell, ArrowRight } from "lucide-react";
+import {
+  fetchMyNotifications,
+  markAllReadAction,
+} from "@/app/actions/notifications";
 
 interface NotifItem {
   id: string;
@@ -88,14 +91,16 @@ export function NotificationBell() {
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div
-            className="absolute right-0 top-[calc(100%+10px)] z-50 w-80 overflow-hidden rounded-md bg-[#fffdf9] shadow-xl"
+            className="fixed inset-x-3 top-[84px] z-50 overflow-hidden rounded-md bg-[#fffdf9] shadow-xl sm:absolute sm:inset-x-auto sm:right-0 sm:top-[calc(100%+10px)] sm:w-80"
             style={{ border: "1px solid #e5dccd" }}
           >
             <div
               className="flex items-center justify-between px-4 py-3"
               style={{ borderBottom: "1px solid #e5dccd" }}
             >
-              <p className="font-display text-base font-semibold text-[#15110e]">Notifications</p>
+              <p className="font-display text-base font-semibold text-[#15110e]">
+                Notifications
+              </p>
               {unread > 0 && (
                 <button
                   type="button"
@@ -106,13 +111,17 @@ export function NotificationBell() {
                 </button>
               )}
             </div>
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-[60vh] overflow-y-auto sm:max-h-96">
               {!loaded ? (
-                <p className="px-4 py-8 text-center text-xs text-[#7d7266]">Loading…</p>
+                <p className="px-4 py-8 text-center text-xs text-[#7d7266]">
+                  Loading...
+                </p>
               ) : items.length === 0 ? (
-                <p className="px-4 py-8 text-center text-xs text-[#7d7266]">No notifications yet.</p>
+                <p className="px-4 py-8 text-center text-xs text-[#7d7266]">
+                  No notifications yet.
+                </p>
               ) : (
-                items.map((n) => {
+                items.slice(0, 6).map((n) => {
                   const Comp: React.ElementType = n.linkUrl ? Link : "div";
                   const props = n.linkUrl ? { href: n.linkUrl } : {};
                   return (
@@ -123,23 +132,41 @@ export function NotificationBell() {
                       className="flex gap-3 px-4 py-3 text-left transition-colors hover:bg-[#f7f3ec]"
                       style={{
                         borderBottom: "1px solid #e5dccd",
-                        backgroundColor: !n.read ? "rgba(200,164,92,0.06)" : "transparent",
+                        backgroundColor: !n.read
+                          ? "rgba(200,164,92,0.06)"
+                          : "transparent",
                       }}
                     >
                       <span
                         className="mt-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full"
-                        style={{ backgroundColor: n.read ? "transparent" : "#c8a45c" }}
+                        style={{
+                          backgroundColor: n.read ? "transparent" : "#c8a45c",
+                        }}
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="text-[13px] font-semibold text-[#15110e]">{n.title}</p>
-                        <p className="mt-0.5 line-clamp-2 text-[12px] text-[#7d7266]">{n.body}</p>
-                        <p className="mt-1 text-[10.5px] text-[#a1968a]">{timeAgo(n.createdAt)}</p>
+                        <p className="text-[13px] font-semibold text-[#15110e]">
+                          {n.title}
+                        </p>
+                        <p className="mt-0.5 line-clamp-2 text-[12px] text-[#7d7266]">
+                          {n.body}
+                        </p>
+                        <p className="mt-1 text-[10.5px] text-[#a1968a]">
+                          {timeAgo(n.createdAt)}
+                        </p>
                       </div>
                     </Comp>
                   );
                 })
               )}
             </div>
+            <Link
+              href="/notifications"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-semibold text-[#9c7c3c] transition-colors hover:bg-[#f7f3ec]"
+            >
+              View all notifications
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </>
       )}

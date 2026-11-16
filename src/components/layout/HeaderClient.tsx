@@ -261,6 +261,18 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
                   Messages
                 </Link>
               )}
+              {user && (
+                <Link
+                  href="/notifications"
+                  className="py-3.5 font-display text-lg"
+                  style={{
+                    color: "#ffffff",
+                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  Notifications
+                </Link>
+              )}
               <Link
                 href="/sell"
                 className="py-3.5 font-display text-lg"
