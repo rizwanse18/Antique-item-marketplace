@@ -6,6 +6,7 @@ export interface CurrentUser {
   name: string;
   email: string;
   role: Role;
+  emailVerified?: boolean;
   initials: string;
 }
 

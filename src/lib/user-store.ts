@@ -7,6 +7,9 @@ export interface StoredUser {
   name: string;
   email: string;
   passwordHash: string;
+  emailVerified?: boolean;
+  otpCode?: string | null;
+  otpExpiresAt?: Date | null;
   role: Role;
   createdAt: number;
 }
