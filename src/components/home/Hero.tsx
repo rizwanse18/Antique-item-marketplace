@@ -73,9 +73,16 @@ export function Hero({ featured }: { featured: Item | null }) {
               <span className="absolute -top-3 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-burgundy px-3 py-1 text-[10px] font-bold uppercase tracking-[.22em] text-white shadow-lg">
                 <span className="live-dot" /> Live Lot
               </span>
-              <div className="aspect-[4/3] overflow-hidden rounded-md bg-ink-2">
-                <ItemImage item={featured} />
+              {/* --- FIXED IMAGE SECTION --- */}
+              <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-ink-2">
+                <img 
+                  src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop" 
+                  alt={featured.title}
+                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+                <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.6)]" />
               </div>
+              
               <div className="mt-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[.24em] text-gold">
                   {featured.category} / {featured.era}
