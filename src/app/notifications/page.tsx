@@ -4,8 +4,6 @@ import { getMyNotifications } from "@/lib/notifications";
 import { Container } from "@/components/ui/Container";
 import { NotificationsClient } from "./NotificationsClient";
 
-export const dynamic = "force-dynamic";
-
 export const metadata = {
   title: "Notifications | ANTIQUA",
   description: "Your bids, auctions and order updates.",
