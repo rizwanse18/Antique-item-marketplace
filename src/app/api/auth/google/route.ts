@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 export async function GET() {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
 
+  console.log("CLIENT_ID exists:", !!process.env.GOOGLE_CLIENT_ID);
+  console.log("SITE_URL:", process.env.NEXT_PUBLIC_SITE_URL);
+
   const options = {
     redirect_uri: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/google/callback`,
     client_id: process.env.GOOGLE_CLIENT_ID!,

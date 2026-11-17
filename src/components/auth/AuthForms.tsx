@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { signInAction, signUpAction, type AuthState } from "@/app/actions/auth";
 
@@ -12,20 +13,36 @@ function Field({
 }: {
   name: string; label: string; type?: string; autoComplete?: string; placeholder?: string;
 }) {
+  const [show, setShow] = useState(false);
+  const isPassword = type === "password";
+  const inputType = isPassword ? (show ? "text" : "password") : type;
+
   return (
     <div>
       <label htmlFor={name} className="mb-1.5 block text-[11px] font-bold uppercase tracking-[0.13em] text-muted">
         {label}
       </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        autoComplete={autoComplete}
-        placeholder={placeholder}
-        required
-        className="w-full rounded-sm border border-line-2 bg-paper px-3.5 py-3 text-sm transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
-      />
+      <div className="relative">
+        <input
+          id={name}
+          name={name}
+          type={inputType}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+          required
+          className="w-full rounded-sm border border-line-2 bg-paper px-3.5 py-3 pr-10 text-sm transition-colors focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20"
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShow(!show)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-2 hover:text-ink"
+            aria-label={show ? "Hide password" : "Show password"}
+          >
+            {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
