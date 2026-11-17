@@ -2,17 +2,26 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Countdown } from "@/components/marketplace/Countdown";
-import { ItemImage } from "@/components/marketplace/ItemImage";
-import { formatMoney, getSeller } from "@/lib/mock-data";
+import { formatMoney } from "@/lib/mock-data";
 import type { Item } from "@/types";
 
 export function Hero({ featured }: { featured: Item | null }) {
-  const seller = featured ? getSeller(featured.sellerId) : null;
+  // FALLBACK: If no live items in DB, show a beautiful default antique
+  const displayItem = featured || {
+    title: "Rare 18th Century Giltwood Mirror",
+    category: "Furniture",
+    era: "French, c. 1780",
+    currentBid: 4200,
+    bidsCount: 14,
+    watchers: 89,
+    endsAt: new Date(Date.now() + 86400000).toISOString(),
+    slug: "rare-18th-century-giltwood-mirror",
+  };
 
   return (
     <section className="relative overflow-hidden bg-ink text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_500px_at_78%_18%,rgba(110,31,43,.5),transparent_62%),radial-gradient(700px_500px_at_12%_92%,rgba(200,164,92,.16),transparent_65%)]" />
-      <Container className="relative z-10 grid gap-14 py-20 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
+      <Container className="relative z-10 grid gap-14 py-16 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[.24em] text-gold">
             International Auction House / Since 1897
@@ -45,75 +54,49 @@ export function Hero({ featured }: { featured: Item | null }) {
                 Live Auctions
               </Button>
             </Link>
-            <Link href="/sell">
-              <Button variant="ghost" size="lg" className="text-white/85 hover:bg-white/10 hover:text-white">
-                Sell an Antique
-              </Button>
-            </Link>
-          </div>
-
-          <div className="mt-12 flex flex-wrap gap-10 border-t border-white/10 pt-7">
-            {[
-              { num: "12,400+", lbl: "Active Lots" },
-              { num: "48,900+", lbl: "Bids Placed" },
-              { num: "128", lbl: "Countries" },
-              { num: "99.4%", lbl: "Auth. Rate" },
-            ].map((s) => (
-              <div key={s.lbl}>
-                <p className="font-display text-3xl font-semibold leading-none text-gold-lt">{s.num}</p>
-                <p className="mt-2 text-[10.5px] font-medium uppercase tracking-[.2em] text-white/45">{s.lbl}</p>
-              </div>
-            ))}
           </div>
         </div>
 
-        {featured ? (
-          <div className="relative">
-            <div className="relative overflow-hidden rounded-lg border border-gold/30 bg-gradient-to-br from-white/[.07] to-white/[.02] p-5 backdrop-blur-md">
-              <span className="absolute -top-3 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-burgundy px-3 py-1 text-[10px] font-bold uppercase tracking-[.22em] text-white shadow-lg">
-                <span className="live-dot" /> Live Lot
-              </span>
-              {/* --- FIXED IMAGE SECTION --- */}
-              <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-ink-2">
-                <img 
-                  src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop" 
-                  alt={featured.title}
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-                <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.6)]" />
-              </div>
-              
-              <div className="mt-4">
-                <p className="text-[11px] font-semibold uppercase tracking-[.24em] text-gold">
-                  {featured.category} / {featured.era}
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-white">
-                  {featured.title}
-                </h3>
-                {seller && (
-                  <p className="mt-1 text-xs text-white/55">
-                    {seller.name} / {seller.location}
-                  </p>
-                )}
-                <div className="mt-4 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[.2em] text-white/45">Current bid</p>
-                    <p className="mt-1 font-display text-3xl font-bold leading-none text-gold-lt">{formatMoney(featured.currentBid)}</p>
-                    <p className="mt-1 text-xs text-white/50">{featured.bidsCount} bids / {featured.watchers} watching</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] font-semibold uppercase tracking-[.2em] text-white/45">Closes in</p>
-                    <Countdown endsAt={featured.endsAt} className="mt-1.5 justify-end text-lg text-white" />
-                  </div>
-                </div>
-                <Link href={`/discover/${featured.slug}`} className="mt-5 block">
-                  <Button variant="gold" className="w-full">Place a Bid</Button>
-                </Link>
-              </div>
+        {/* RIGHT SIDE: ALWAYS VISIBLE */}
+        <div className="relative">
+          <div className="relative overflow-hidden rounded-lg border border-gold/30 bg-gradient-to-br from-white/[.07] to-white/[.02] p-5 backdrop-blur-md">
+            <span className="absolute -top-3 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-burgundy px-3 py-1 text-[10px] font-bold uppercase tracking-[.22em] text-white shadow-lg">
+              <span className="live-dot" /> Live Auction
+            </span>
+            
+            <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-ink-2">
+              <img 
+                src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop" 
+                alt={displayItem.title}
+                className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+              />
+              <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]" />
             </div>
-            <div className="absolute -bottom-4 -right-4 -z-10 h-32 w-32 rounded-full bg-gold/20 blur-3xl" />
+            
+            <div className="mt-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[.24em] text-gold">
+                {displayItem.category} / {displayItem.era}
+              </p>
+              <h3 className="mt-2 font-display text-2xl font-semibold leading-snug text-white">
+                {displayItem.title}
+              </h3>
+              <div className="mt-4 flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[.2em] text-white/45">Current bid</p>
+                  <p className="mt-1 font-display text-3xl font-bold leading-none text-gold-lt">{formatMoney(displayItem.currentBid)}</p>
+                  <p className="mt-1 text-xs text-white/50">{displayItem.bidsCount} bids / {displayItem.watchers} watching</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-semibold uppercase tracking-[.2em] text-white/45">Closes in</p>
+                  <Countdown endsAt={displayItem.endsAt} className="mt-1.5 justify-end text-lg text-white" />
+                </div>
+              </div>
+              <Link href={`/discover/${displayItem.slug}`} className="mt-5 block">
+                <Button variant="gold" className="w-full">Place a Bid</Button>
+              </Link>
+            </div>
           </div>
-        ) : null}
+        </div>
       </Container>
     </section>
   );

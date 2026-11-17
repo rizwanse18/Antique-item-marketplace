@@ -1,5 +1,6 @@
 export { Hero } from "./Hero";
 export { TrustBar } from "./TrustBar";
+export { PromoBanners } from "./PromoBanners";
 export { CategoryStrip } from "./CategoryStrip";
 export { LiveAuctionsSection, EndingSoonSection } from "./AuctionSections";
 export { FeaturedItems, RecentlyAdded } from "./FeaturedItems";

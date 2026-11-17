@@ -1,6 +1,7 @@
 import { closeExpiredAuctions } from "@/lib/auctions";
 import {
   Hero,
+  PromoBanners,
   TrustBar,
   CategoryStrip,
   LiveAuctionsSection,
@@ -30,6 +31,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero featured={live[0] ?? null} />
+      <PromoBanners />
       <TrustBar />
       <CategoryStrip />
       <LiveAuctionsSection items={live.slice(0, 4)} favoritedIds={favoritedIds} />
