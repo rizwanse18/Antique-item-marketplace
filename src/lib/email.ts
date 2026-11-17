@@ -24,9 +24,9 @@ export interface SendEmailInput {
  * Send an email.
  *
  * Provider is selected by `EMAIL_PROVIDER` env var:
- *   - "log" (default)  → only logs to terminal + DB (dev-friendly)
- *   - "smtp"           → would use SMTP_* env vars (stub, no lib installed)
- *   - "resend"         → would use RESEND_API_KEY (stub)
+ *   - "log" (default)  â†’ only logs to terminal + DB (dev-friendly)
+ *   - "smtp"           â†’ would use SMTP_* env vars (stub, no lib installed)
+ *   - "resend"         â†’ would use RESEND_API_KEY (stub)
  *
  * Every attempt is recorded in the EmailLog table regardless of provider
  * so you can audit exactly what was sent.
@@ -64,11 +64,11 @@ export async function sendEmail(input: SendEmailInput): Promise<void> {
       /* ignore */
     }
     console.log("");
-    console.log("📧 [email/log] ─────────────────────────────");
+    console.log("ðŸ“§ [email/log] â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€");
     console.log(`   To:      ${input.toName} <${input.toEmail}>`);
     console.log(`   Subject: ${input.subject}`);
-    console.log(`   Body:    ${input.body.slice(0, 120)}${input.body.length > 120 ? "…" : ""}`);
-    console.log("─────────────────────────────────────────────");
+    console.log(`   Body:    ${input.body.slice(0, 120)}${input.body.length > 120 ? "â€¦" : ""}`);
+    console.log("â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€");
     return;
   }
 
@@ -77,12 +77,12 @@ export async function sendEmail(input: SendEmailInput): Promise<void> {
       // To enable: npm install nodemailer && npm install -D @types/nodemailer
       // Then implement here using SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS env vars.
       // await transporter.sendMail({ from, to, subject, text });
-      throw new Error("SMTP provider not yet configured — install nodemailer and implement sendViaSmtp().");
+      throw new Error("SMTP provider not yet configured â€” install nodemailer and implement sendViaSmtp().");
     }
     if (provider === "resend") {
       // To enable: npm install resend
       // Then implement here using RESEND_API_KEY env var.
-      throw new Error("Resend provider not yet configured — install resend and implement sendViaResend().");
+      throw new Error("Resend provider not yet configured â€” install resend and implement sendViaResend().");
     }
     throw new Error(`Unknown EMAIL_PROVIDER: ${provider}`);
   } catch (e) {
@@ -101,7 +101,7 @@ export async function sendEmail(input: SendEmailInput): Promise<void> {
   }
 }
 
-// Convenience helper — fetch user and call sendEmail
+// Convenience helper â€” fetch user and call sendEmail
 export async function sendEmailToUser(
   userId: string,
   subject: string,
