@@ -18,11 +18,14 @@ export function Hero({ featured }: { featured: Item | null }) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-ink text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_500px_at_78%_18%,rgba(110,31,43,.5),transparent_62%),radial-gradient(700px_500px_at_12%_92%,rgba(200,164,92,.16),transparent_65%)]" />
+    /* Removed overflow-hidden from section so the badge doesn't get cut off */
+    <section className="relative bg-ink text-white">
+      {/* Moved overflow-hidden here for the background gradients */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(900px_500px_at_78%_18%,rgba(110,31,43,.5),transparent_62%),radial-gradient(700px_500px_at_12%_92%,rgba(200,164,92,.16),transparent_65%)]" />
+      </div>
       
-      {/* Reduced py-16 to py-12 to give more vertical room */}
-      <Container className="relative z-10 grid gap-10 py-12 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+      <Container className="relative z-10 grid gap-10 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[.24em] text-gold">
             International Auction House / Since 1897
@@ -72,14 +75,13 @@ export function Hero({ featured }: { featured: Item | null }) {
           </div>
         </div>
 
-        {/* RIGHT SIDE: Card resized to fit */}
-        <div className="relative">
-          <div className="relative overflow-hidden rounded-lg border border-gold/30 bg-gradient-to-br from-white/[.07] to-white/[.02] p-4 backdrop-blur-md">
+        {/* Added pt-4 so the absolute badge has room to breathe */}
+        <div className="relative pt-4">
+          <div className="relative rounded-lg border border-gold/30 bg-gradient-to-br from-white/[.07] to-white/[.02] p-4 backdrop-blur-md">
             <span className="absolute -top-3 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-burgundy px-3 py-1 text-[10px] font-bold uppercase tracking-[.22em] text-white shadow-lg">
               <span className="live-dot" /> Live Auction
             </span>
             
-            {/* Changed aspect-[4/3] to aspect-[16/10] so it is not too tall */}
             <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-ink-2">
               <img 
                 src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop" 
