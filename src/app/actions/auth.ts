@@ -72,10 +72,7 @@ export async function signInAction(_prev: AuthState, formData: FormData): Promis
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return { error: "Invalid email or password." };
   
-  // Block sign-in if not verified
-  if (!user.emailVerified) {
-    return { error: "Please verify your email first. Check your inbox for the code." };
-  }
+  
 
   await setSession(user.id);
   redirect("/dashboard");

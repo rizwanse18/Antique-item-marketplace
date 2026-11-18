@@ -76,7 +76,7 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
           })}
         </nav>
 
-        {/* ─── NEW SEARCH ─── */}
+        {/* â”€â”€â”€ NEW SEARCH â”€â”€â”€ */}
         <HeaderSearch />
 
         <div className="ml-auto flex items-center gap-1 md:ml-0">
@@ -201,7 +201,7 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
                 e.currentTarget.style.color = "#e3cb94";
               }}
             >
-              Sign In
+              Login
             </Link>
           )}
 
@@ -286,7 +286,7 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
                   className="mt-4 inline-flex justify-center rounded-full px-5 py-3 text-sm font-semibold"
                   style={{ border: "1px solid #c8a45c", color: "#e3cb94" }}
                 >
-                  Sign In
+                  Login
                 </Link>
               )}
             </nav>
