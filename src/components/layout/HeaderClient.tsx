@@ -15,6 +15,7 @@ import {
 import { Container } from "@/components/ui/Container";
 import { Logo } from "./Logo";
 import { HeaderSearch } from "./HeaderSearch";
+import { CurrencySelector } from "./CurrencySelector";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { MessagesLink } from "@/components/messages/MessagesLink";
 import { CartIcon } from "@/components/cart/CartIcon";
@@ -76,7 +77,7 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
           })}
         </nav>
 
-        {/* â”€â”€â”€ NEW SEARCH â”€â”€â”€ */}
+        {/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ NEW SEARCH Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */}
         <HeaderSearch />
 
         <div className="ml-auto flex items-center gap-1 md:ml-0">
@@ -85,6 +86,7 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
             className="hidden rounded-full bg-gradient-to-br from-[#e3cb94] to-[#c8a45c] px-5 py-2.5 text-[13px] font-semibold text-[#15110e] transition-all hover:brightness-110 lg:inline-flex"
           >
             Sell an Item
+          <CurrencySelector />
           </Link>
 
           <Link
@@ -164,7 +166,8 @@ export function HeaderClient({ user }: { user: CurrentUser | null }) {
                     >
                       <ShoppingBag className="h-4 w-4 text-[#7d7266]" />
                       My Orders
-                    </Link>
+                    <CurrencySelector />
+          </Link>
                     <Link
                       href="/favorites"
                       className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#15110e] hover:bg-[#f7f3ec]"
