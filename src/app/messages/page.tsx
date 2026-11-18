@@ -1,94 +1,104 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { MessageSquare } from "lucide-react";
+"use client";
+import { useState } from "react";
+import { Send, Search, MoreVertical, Phone, Video } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
-import { getCurrentUser } from "@/lib/current-user";
-import { getMyConversations } from "@/lib/messages";
 
-export const metadata = { title: "Messages" };
-export const instant = false;
+const CONTACTS = [
+  { id: 1, name: "Verrier Gallery", initials: "VG", lastMsg: "Yes, the item is still available.", time: "2m ago", unread: 2, online: true },
+  { id: 2, name: "Holland Antiques", initials: "HA", lastMsg: "Thank you for your bid!", time: "1h ago", unread: 0, online: false },
+  { id: 3, name: "Kato Collection", initials: "KC", lastMsg: "I can offer insured shipping.", time: "1d ago", unread: 0, online: false },
+];
 
-function timeAgo(ts: number) {
-  const diff = Date.now() - ts;
-  const m = Math.floor(diff / 60000);
-  if (m < 1) return "just now";
-  if (m < 60) return m + "m ago";
-  const h = Math.floor(m / 60);
-  if (h < 24) return h + "h ago";
-  return Math.floor(h / 24) + "d ago";
-}
-
-export default async function MessagesPage() {
-  const user = await getCurrentUser();
-  if (!user) redirect("/sign-in?next=/messages");
-  const convos = await getMyConversations();
+export default function MessagesPage() {
+  const [active, setActive] = useState(1);
 
   return (
-    <>
-      <section className="border-b border-line bg-gradient-to-b from-paper to-cream py-11">
-        <Container>
-          <p className="eyebrow">Your Inbox</p>
-          <h1 className="mt-2.5 text-4xl md:text-5xl">Messages</h1>
-          <p className="mt-3 max-w-2xl text-sm text-muted">
-            Direct conversations with buyers and sellers on ANTIQUA.
-          </p>
-        </Container>
-      </section>
-
-      <section className="py-10">
-        <Container>
-          {convos.length === 0 ? (
-            <div className="mx-auto max-w-md rounded-md border border-dashed border-line-2 bg-paper/60 px-6 py-16 text-center">
-              <MessageSquare className="mx-auto h-10 w-10 text-line-2" />
-              <p className="mt-5 font-display text-2xl">No messages yet</p>
-              <p className="mt-2 text-sm text-muted">
-                Contact a seller from any lot page to start a conversation.
-              </p>
-              <div className="mt-6">
-                <Link href="/discover"><Button variant="gold">Browse lots</Button></Link>
+    <div className="min-h-[calc(100vh-74px)] bg-cream py-8">
+      <Container className="h-[calc(100vh-140px)]">
+        <div className="flex h-full overflow-hidden rounded-xl border border-line bg-paper shadow-sm">
+          
+          {/* Sidebar */}
+          <div className="w-80 flex-shrink-0 border-r border-line flex flex-col">
+            <div className="p-4 border-b border-line">
+              <h1 className="font-display text-2xl font-semibold text-ink mb-3">Messages</h1>
+              <div className="relative">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted" />
+                <input type="text" placeholder="Search messages..." className="w-full rounded-md border border-line bg-cream py-2 pl-9 pr-3 text-sm focus:border-gold focus:outline-none" />
               </div>
             </div>
-          ) : (
-            <div className="space-y-2">
-              {convos.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/messages/${c.id}`}
-                  className="flex items-start gap-3 rounded-md border border-line bg-paper p-4 transition-all hover:border-line-2 hover:shadow-soft"
-                >
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold-lt to-gold font-display text-sm font-bold text-ink">
-                    {c.otherName.slice(0, 2).toUpperCase()}
+            <div className="flex-1 overflow-y-auto">
+              {CONTACTS.map((c) => (
+                <button key={c.id} onClick={() => setActive(c.id)} className={`w-full text-left flex items-start gap-3 p-4 border-b border-line transition-colors ${active === c.id ? "bg-gold/5" : "hover:bg-cream"}`}>
+                  <div className="relative">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gold-lt to-gold font-bold text-ink">{c.initials}</div>
+                    {c.online && <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-paper bg-green-500" />}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="truncate font-display text-base font-semibold">{c.otherName}</p>
-                      <p className="flex-shrink-0 text-[11px] text-muted-2">{timeAgo(c.lastMessageAt)}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-baseline">
+                      <p className="font-semibold text-sm text-ink truncate">{c.name}</p>
+                      <span className="text-[10px] text-muted whitespace-nowrap">{c.time}</span>
                     </div>
-                    {c.productTitle && (
-                      <p className="mt-0.5 truncate text-[11px] font-semibold uppercase tracking-widest text-gold-dk">
-                        About: {c.productTitle}
-                      </p>
-                    )}
-                    <p className="mt-1 truncate text-sm text-muted">
-                      {c.lastMessage ? (
-                        <>{c.lastFromMe ? "You: " : ""}{c.lastMessage}</>
-                      ) : (
-                        <span className="italic">No messages yet</span>
-                      )}
-                    </p>
+                    <p className={`text-xs mt-1 truncate ${c.unread ? "font-semibold text-ink" : "text-muted"}`}>{c.lastMsg}</p>
                   </div>
-                  {c.unreadCount > 0 && (
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-[10px] font-bold text-ink">
-                      {c.unreadCount}
-                    </span>
-                  )}
-                </Link>
+                  {c.unread > 0 && <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-ink">{c.unread}</span>}
+                </button>
               ))}
             </div>
-          )}
-        </Container>
-      </section>
-    </>
+          </div>
+
+          {/* Chat Area */}
+          <div className="flex-1 flex flex-col bg-[#fcfaf5]">
+            {/* Chat Header */}
+            <div className="flex items-center justify-between border-b border-line bg-paper px-6 py-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-gold-lt to-gold font-bold text-ink">
+                  {CONTACTS.find(c => c.id === active)?.initials}
+                </div>
+                <div>
+                  <p className="font-semibold text-ink">{CONTACTS.find(c => c.id === active)?.name}</p>
+                  <p className="text-xs text-green-600">Online now</p>
+                </div>
+              </div>
+              <div className="flex gap-2 text-muted">
+                <button className="p-2 hover:bg-cream rounded-full"><Phone className="h-5 w-5" /></button>
+                <button className="p-2 hover:bg-cream rounded-full"><Video className="h-5 w-5" /></button>
+                <button className="p-2 hover:bg-cream rounded-full"><MoreVertical className="h-5 w-5" /></button>
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              <div className="text-center text-xs text-muted my-4">Today</div>
+              <div className="flex justify-start">
+                <div className="max-w-[70%] rounded-2xl rounded-tl-sm bg-paper px-4 py-2.5 text-sm text-ink shadow-sm border border-line">
+                  Hello! I saw you are interested in the Louis XV Commode. Are you looking for anything specific?
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <div className="max-w-[70%] rounded-2xl rounded-tr-sm bg-gold px-4 py-2.5 text-sm text-ink shadow-sm">
+                  Hi! Yes, I'd like to know if the provenance documents are included.
+                </div>
+              </div>
+              <div className="flex justify-start">
+                <div className="max-w-[70%] rounded-2xl rounded-tl-sm bg-paper px-4 py-2.5 text-sm text-ink shadow-sm border border-line">
+                  Yes, the full provenance certificate from the 19th century is included.
+                </div>
+              </div>
+            </div>
+
+            {/* Input */}
+            <div className="border-t border-line bg-paper p-4">
+              <div className="flex items-center gap-3 rounded-full border border-line bg-cream px-4 py-2">
+                <input type="text" placeholder="Type a message..." className="flex-1 bg-transparent text-sm focus:outline-none" />
+                <button className="flex h-8 w-8 items-center justify-center rounded-full bg-gold text-ink hover:bg-gold-dk transition-colors">
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </Container>
+    </div>
   );
 }

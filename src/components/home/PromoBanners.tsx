@@ -13,7 +13,7 @@ export function PromoBanners() {
               <Flame className="h-3 w-3 text-gold-lt" /> Ending Soon
             </span>
             <h3 className="mt-3 font-display text-2xl font-semibold">Flash Auctions</h3>
-            <p className="mt-1 text-sm text-white/70">Bid on pieces closing in the next 6 hours.</p>
+            <p className="mt-1 text-sm text-white/90">Bid on pieces closing in the next 6 hours.</p>
             <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-gold-lt group-hover:underline">View Lots &rarr;</p>
           </div>
           <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
@@ -26,7 +26,7 @@ export function PromoBanners() {
               <Sparkles className="h-3 w-3 text-gold" /> Just Added
             </span>
             <h3 className="mt-3 font-display text-2xl font-semibold">New Arrivals</h3>
-            <p className="mt-1 text-sm text-white/70">Freshly sourced antiques from top dealers.</p>
+            <p className="mt-1 text-sm text-white/90">Freshly sourced antiques from top dealers.</p>
             <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-gold group-hover:underline">Explore Now &rarr;</p>
           </div>
           <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-gold/10 blur-2xl" />
@@ -39,7 +39,7 @@ export function PromoBanners() {
               <Tag className="h-3 w-3" /> Consign
             </span>
             <h3 className="mt-3 font-display text-2xl font-semibold">Sell Your Antiques</h3>
-            <p className="mt-1 text-sm text-ink/70">Reach 50,000+ global collectors today.</p>
+            <p className="mt-1 text-sm text-ink/90">Reach 50,000+ global collectors today.</p>
             <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-ink group-hover:underline">Start Selling &rarr;</p>
           </div>
           <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-white/20 blur-2xl" />
