@@ -39,9 +39,9 @@ export default function SignInPage() {
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-ink">Password</label>
-              <input name="password" type="password" required className="w-full rounded-md border border-line px-3 py-2.5 text-sm focus:border-gold focus:outline-none" placeholder="••••••••" />
+              <input name="password" type="password" required className="w-full rounded-md border border-line px-3 py-2.5 text-sm focus:border-gold focus:outline-none" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
             </div>
-            <button type="submit" disabled={isPending} className="w-full rounded-md bg-gold py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold-dk disabled:opacity-50">
+            <div className="flex justify-end mb-2"><Link href="/forgot-password" className="text-xs font-semibold text-gold-dk hover:underline">Forgot Password?</Link></div>`n            `<button type="submit" disabled={isPending} className="w-full rounded-md bg-gold py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold-dk disabled:opacity-50">
               {isPending ? "Logging in..." : "Login"}
             </button>
           </form>

@@ -9,14 +9,33 @@ export function CurrencySelector() {
 
   useEffect(() => {
     const saved = localStorage.getItem("selectedCurrency");
-    if (saved) setCurrency(saved);
+    if (saved) {
+      setCurrency(saved);
+      return;
+    }
+
+    // Auto-detect based on browser timezone
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      let detected = "USD";
+      
+      if (tz.includes("Karachi") || tz.includes("Asia/Karachi")) detected = "PKR";
+      else if (tz.includes("London") || tz.includes("Europe/London")) detected = "GBP";
+      else if (tz.includes("Europe/")) detected = "EUR";
+      else if (tz.includes("Dubai") || tz.includes("Asia/Dubai")) detected = "AED";
+      
+      setCurrency(detected);
+      localStorage.setItem("selectedCurrency", detected);
+      // Refresh prices
+      window.dispatchEvent(new Event("currencyChanged"));
+    } catch(e) {}
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCurrency = e.target.value;
     setCurrency(newCurrency);
     localStorage.setItem("selectedCurrency", newCurrency);
-    window.location.reload(); // Reload to update all prices instantly
+    window.location.reload(); 
   };
 
   return (
