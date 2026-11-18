@@ -1,10 +1,11 @@
 "use client";
 import { useState, useTransition, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { verifyEmailAction } from "@/app/actions/auth";
 
 function VerifyForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const email = searchParams.get("email") || "";
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
@@ -15,14 +16,16 @@ function VerifyForm() {
     startTransition(async () => {
       const res = await verifyEmailAction(email, code);
       if (res?.error) setError(res.error);
+      else router.push("/dashboard");
     });
   };
 
   return (
-    <div className="w-full max-w-md rounded-lg bg-paper p-8 shadow-xl">
+    <div className="w-full max-w-md rounded-xl border border-line bg-paper p-8 shadow-xl">
       <h1 className="font-display text-3xl font-semibold text-ink">Verify your email</h1>
       <p className="mt-2 text-sm text-muted">We sent a 6-digit code to <strong>{email}</strong></p>
-      {error && <p className="mt-4 text-sm text-red-500">{error}</p>}
+      {error && <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-600">{error}</p>}
+      
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <input
           type="text"

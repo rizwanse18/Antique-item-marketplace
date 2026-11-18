@@ -31,14 +31,14 @@ export async function signUpAction(_prev: AuthState, formData: FormData): Promis
     data: { otpCode: otp, otpExpiresAt: new Date(Date.now() + 15 * 60 * 1000) }
   });
 
-  // Send OTP Email
+  // Print OTP in console for testing (will show in Vercel Logs)
+  console.log(`\n=========================================`);
+  console.log(`🔑 OTP CODE FOR ${email}: ${otp}`);
+  console.log(`=========================================\n`);
+
+  // Send Email (using your existing email function)
   try {
-    await sendEmailToUser(
-      user.id,
-      "Your ANTIQUA Verification Code",
-      `Welcome ${name},\n\nYour verification code is: ${otp}\n\nThis code expires in 15 minutes.`,
-      "welcome"
-    );
+    await sendEmailToUser(user.id, "Verify your ANTIQUA account", `Your verification code is: ${otp}`, "welcome");
   } catch (e) { console.error("[auth] email failed:", e); }
 
   redirect(`/verify-email?email=${encodeURIComponent(email)}`);
@@ -67,12 +67,15 @@ export async function signInAction(_prev: AuthState, formData: FormData): Promis
 
   const user = await findUserByEmail(email);
   if (!user) return { error: "Invalid email or password." };
-  if (!user.passwordHash) return { error: "Please sign in with Google." }; // User created via Google
+  if (!user.passwordHash) return { error: "Please sign in with Google." };
 
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) return { error: "Invalid email or password." };
   
-  
+  // STRICT VERIFICATION CHECK
+  if (!user.emailVerified) {
+    return { error: "Please verify your email first. Check your inbox or Vercel logs for the OTP code." };
+  }
 
   await setSession(user.id);
   redirect("/dashboard");
