@@ -35,39 +35,20 @@ export default function SignInPage() {
             )}
             <div>
               <label className="mb-1 block text-sm font-medium text-ink">Email address</label>
-              <input
-                name="email"
-                type="email"
-                required
-                className="w-full rounded-md border border-line px-3 py-2.5 text-sm focus:border-gold focus:outline-none"
-                placeholder="you@example.com"
-              />
+              <input name="email" type="email" required className="w-full rounded-md border border-line px-3 py-2.5 text-sm focus:border-gold focus:outline-none" placeholder="you@example.com" />
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-ink">Password</label>
-              <input
-                name="password"
-                type="password"
-                required
-                className="w-full rounded-md border border-line px-3 py-2.5 text-sm focus:border-gold focus:outline-none"
-                placeholder="••••••••"
-              />
+              <input name="password" type="password" required className="w-full rounded-md border border-line px-3 py-2.5 text-sm focus:border-gold focus:outline-none" placeholder="••••••••" />
             </div>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="w-full rounded-md bg-gold py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold-dk disabled:opacity-50"
-            >
+            <button type="submit" disabled={isPending} className="w-full rounded-md bg-gold py-3 text-sm font-semibold text-ink transition-colors hover:bg-gold-dk disabled:opacity-50">
               {isPending ? "Logging in..." : "Login"}
             </button>
           </form>
         </div>
 
         <p className="mt-6 text-center text-sm text-muted">
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="font-semibold text-gold-dk hover:underline">
-            Sign up
-          </Link>
+          Don't have an account? <Link href="/sign-up" className="font-semibold text-gold-dk hover:underline">Sign up</Link>
         </p>
       </div>
     </div>
